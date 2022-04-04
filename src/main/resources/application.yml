@@ -1,0 +1,82 @@
+server:
+  port: 8008
+
+logging:
+  level:
+    root: info
+    com.gougu.trade.ib: info
+
+spring:
+  application:
+    name: ibTrade
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ib_company?serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    initial-size: 1
+    min-idle: 1
+    max-active: 20
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 'x'
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 20
+    filters: stat
+
+dao:
+  mybatis:
+    plus:
+      config:
+        global:
+          id-type: 0
+          db-type: mysql
+          db-column-underline: true
+          logic-delete-value: 0
+          logic-not-delete-value: 0
+        sql:
+          session:
+            factory:
+              mapper-locations: classpath:mybatis/mapper/accountMapper.xml
+              configLocation: classpath:mybatis/mybatis-context.xml
+              type-aliases-package: com.gougou.ib.company.dao.model
+    config:
+      mapper:
+        scanner:
+          sql-session-factory-bean-name: sqlSessionFactory
+
+trade:
+  tiger:
+    server_url: https://openapi.skytigris.cn/gateway
+    wss_url: wss://openapi.itiger.com:8887/stomp
+    tiger_id: #老虎证券实盘ID
+    private_key: #老虎证券访问私钥
+    account: #老虎证券账户号
+    is_tiger_account: #实盘是否老虎证券
+  tws:
+    #TWS客户端的Ip地址
+    ip: 127.0.0.1
+    #TWS客户端开放的端口
+    port: 7496
+    #TWS客户端Id,默认为0
+    client-id: 0
+  rule:
+    #针对开仓,如果涨幅超过10%停止买入,如果跌幅超过10%停止买入
+    rise-high: 0.1
+    #杠杆倍数
+    lever: 1.25
+    #满仓满融时股票数量
+    total-stock: 12
+    #访问勾股系统的用户名
+    ib-user: #用户名
+    #访问勾股系统的密码
+    pwd: #密码
+    #勾股系统的登陆地址
+    login_url: #登陆地址
+    #勾股系统查询持仓
+    hold_url: #查询持仓
+    #勾股系统查询交易计划
+    plan_url: #交易计划
